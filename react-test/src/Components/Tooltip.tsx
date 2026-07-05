@@ -1,8 +1,8 @@
 import { Tooltip as AntdTooltip, } from 'antd'
+import { state as _state } from '../Store'
+import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
 import React from 'react'
-import { useProxy } from 'valtio/utils'
-import { state as _state } from '../Store'
 
 const Tooltip = ({ title, children }: { title: React.ReactNode, children: React.ReactNode }) => {
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
@@ -12,9 +12,9 @@ const Tooltip = ({ title, children }: { title: React.ReactNode, children: React.
     <AntdTooltip
       mouseEnterDelay={0}
       trigger={trigger}
-      title={<span className={css`font-family: 'TAHOMA';`}>{title}</span>}
+      title={title}
     >
-      <span className={css`color:${state.isDarkMode ? '#FFFFFF' : '#000000'}; font-family: 'TAHOMA';`}>{children}</span>
+      <span className={css`color:${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>{children}</span>
     </AntdTooltip>
   </>
 }

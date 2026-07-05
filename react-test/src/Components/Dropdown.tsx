@@ -1,8 +1,8 @@
 import { Dropdown as AntdDropdown, Button, ConfigProvider } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
-import { css } from '@emotion/css'
-import { useProxy } from 'valtio/utils'
 import { state as _state } from '../Store'
+import { useProxy } from 'valtio/utils'
+import { css } from '@emotion/css'
 
 type Props = { value: string; array: Array<string>; width: string; onChange: (res: string) => void }
 
