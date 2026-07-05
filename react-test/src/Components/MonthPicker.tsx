@@ -1,8 +1,10 @@
-import { DatePicker, Button, ConfigProvider, theme } from 'antd'
+import { DatePicker, Button, ConfigProvider } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { css } from '@emotion/css'
 import { useState } from 'react'
 import dayjs from 'dayjs'
+import { useProxy } from 'valtio/utils'
+import { state as _state } from '../Store'
 
 function getDateString(dateValue: any) {
   const date = dateValue.toDate()
@@ -11,9 +13,9 @@ function getDateString(dateValue: any) {
   return year + '-' + String(month).padStart(2, '0')
 }
 
-type Props = { value: string; width: string; isDarkMode: boolean; onChange: (res: string) => void }
+type Props = { value: string; width: string; onChange: (res: string) => void }
 
-function MonthPicker({ value, width, isDarkMode, onChange }: Props) {
+function MonthPicker({ value, width, onChange }: Props) {
   const year = Number(value.slice(0, 4))
   const month = Number(value.slice(5, 7)) - 1
   let dayjsValue = dayjs().year(year).month(month)
@@ -23,17 +25,17 @@ function MonthPicker({ value, width, isDarkMode, onChange }: Props) {
     dayjsValue = dayjs().year(year).month(month)
   }
   const [open, setOpen] = useState(false)
+  const state = useProxy(_state)
   return <span>
     <ConfigProvider
       theme={{
-        algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
         components: {
           Button: {
-            defaultColor: isDarkMode ? '#FFFFFF' : '#000000',
-            defaultHoverColor: isDarkMode ? '#FFFFFF' : '#000000',
-            defaultActiveColor: isDarkMode ? '#FFFFFF' : '#000000',
-            colorTextDisabled: isDarkMode ? '#FFFFFF' : '#000000',
-            colorBgContainerDisabled: isDarkMode ? '#202020' : '#FFFFFF',
+            defaultColor: state.isDarkMode ? '#FFFFFF' : '#000000',
+            defaultHoverColor: state.isDarkMode ? '#FFFFFF' : '#000000',
+            defaultActiveColor: state.isDarkMode ? '#FFFFFF' : '#000000',
+            colorTextDisabled: state.isDarkMode ? '#FFFFFF' : '#000000',
+            colorBgContainerDisabled: state.isDarkMode ? '#202020' : '#FFFFFF',
           },
         },
       }}

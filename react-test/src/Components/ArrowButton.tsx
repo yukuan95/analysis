@@ -1,7 +1,7 @@
-import { Button, ConfigProvider, theme } from 'antd'
+import { Button } from 'antd'
 import { css } from '@emotion/css'
 
-type Props = { isDarkMode: boolean; onClick: () => void }
+type Props = { onClick: () => void }
 
 function getSvg(name: string) {
   if (name === 'left') {
@@ -25,26 +25,22 @@ function getSvg(name: string) {
   throw 'name error'
 }
 
-function arrowButton(isDarkMode: boolean, name: string, onClick: () => void) {
-  return <ConfigProvider
-    theme={{
-      algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-    }}
-    wave={{ disabled: true }}>
+function arrowButton(name: string, onClick: () => void) {
+  return <>
     <Button onClick={onClick}>
       <div className={css` 
         display: flex; flex-direction: row; justify-content: center; align-items: center; 
       `}>{getSvg(name)}</div>
     </Button>
-  </ConfigProvider>
+  </>
 }
 
-function LeftArrowButton({ isDarkMode, onClick }: Props) {
-  return arrowButton(isDarkMode, 'left', onClick)
+function LeftArrowButton({ onClick }: Props) {
+  return arrowButton('left', onClick)
 }
 
-function RightArrowButton({ isDarkMode, onClick }: Props) {
-  return arrowButton(isDarkMode, 'right', onClick)
+function RightArrowButton({ onClick }: Props) {
+  return arrowButton('right', onClick)
 }
 
 export { LeftArrowButton, RightArrowButton }

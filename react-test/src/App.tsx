@@ -5,7 +5,7 @@ import { Dropdown } from './Components/Dropdown'
 import { Tooltip } from './Components/Tooltip'
 import { useMount } from "@reactuses/core"
 import { useProxy } from 'valtio/utils'
-import { Switch, Spin } from 'antd'
+import { Switch, Spin, ConfigProvider, theme } from 'antd'
 import { css } from '@emotion/css'
 import { useEffect } from 'react'
 import * as lib from './Lib'
@@ -23,9 +23,8 @@ function _App() {
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
       <div>
-        {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}
-          isDarkMode={state.isDarkMode}>
-          <span className={css`color:${state.isDarkMode ? '#FFFFFF' : '#000000'}; user-select: none;`}>
+        {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}>
+          <span className={css`user-select: none;`}>
             <span>{state.data.priceLog.accountAddress.slice(0, 6)}</span>
             <span>...</span>
             <span>{state.data.priceLog.accountAddress.slice(-4)}</span>
@@ -35,7 +34,7 @@ function _App() {
       <div>
         <Dropdown
           value={state.dropdownGraphValue} width={'150px'}
-          array={state.dropdownGraphArray} isDarkMode={state.isDarkMode}
+          array={state.dropdownGraphArray}
           onChange={(val) => state.dropdownGraphValue = val}
         ></Dropdown>
       </div>
@@ -44,24 +43,20 @@ function _App() {
     <div className={css`display: flex; justify-content: space-between;`}>
       <div>
         <MonthPicker
-          value={state.yearMonth} isDarkMode={state.isDarkMode}
-          width={'110px'} onChange={(val) => state.yearMonth = val}
+          value={state.yearMonth} width={'110px'} onChange={(val) => state.yearMonth = val}
         ></MonthPicker>
       </div>
       <div className={css`display: flex; gap: 10px;`}>
         <LeftArrowButton
-          isDarkMode={state.isDarkMode}
           onClick={() => state.yearMonth = lib.monthPlus(state.yearMonth, -1)}
         ></LeftArrowButton>
         <RightArrowButton
-          isDarkMode={state.isDarkMode}
           onClick={() => state.yearMonth = lib.monthPlus(state.yearMonth, 1)}
         ></RightArrowButton>
       </div>
       <div>
         <Dropdown
-          value={state.dropdownTableValue} width={'110px'}
-          array={state.dropdownTableArray} isDarkMode={state.isDarkMode}
+          value={state.dropdownTableValue} width={'110px'} array={state.dropdownTableArray}
           onChange={(val) => state.dropdownTableValue = val}
         ></Dropdown>
       </div>
@@ -75,22 +70,25 @@ function App() {
   onMount(state, useMount)
   onEffect(state, useEffect)
   return (
-    <>
+    <ConfigProvider
+      wave={{ disabled: true }}
+      theme={{
+        token: { fontFamily: 'TAHOMA' },
+        algorithm: state.isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        components: { Table: { cellPaddingBlockSM: 0, headerBorderRadius: 0 } },
+      }}
+    >
       {state.isLoading
         ? <Spin styles={{
-          root: {
-            backgroundColor: `${state.isDarkMode ? '#292929FF' : '#FFFFFFFF'}`,
-          },
-          indicator: {
-            color: `${state.isDarkMode ? '#3F96FF' : '#3F96FF'}`,
-          },
+          root: { backgroundColor: `${state.isDarkMode ? '#292929FF' : '#FFFFFFFF'}`, },
+          indicator: { color: `${state.isDarkMode ? '#3F96FF' : '#3F96FF'}`, },
         }} fullscreen />
-        : <div className={css`display: flex; justify-content: center;`}>
+        : <div className={css`display: flex; justify-content: center; font-family: 'TAHOMA';`}>
           <div className={css`width: 355px; padding-left: 5px; padding-right: 5px;`}>
             <_App></_App>
           </div>
         </div>}
-    </>
+    </ConfigProvider>
   )
 }
 
