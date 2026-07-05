@@ -39,7 +39,8 @@ function onEffect(state: StateType, useEffect: any) {
 function onMount(state: StateType, useMount: any) {
   useMount(async () => {
     state.isLoading = true
-    state.data = await lib.getData()
+    const res = await Promise.all([lib.getData(), lib.getFonts(), lib.getCandleData()])
+    state.data = res[0]
     state.isLoading = false
   })
 }

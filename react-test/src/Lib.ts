@@ -21,6 +21,13 @@ export async function fetchJson(data: { url: string, headers?: any, method?: any
   return await res.json()
 }
 
+export async function getFonts(): Promise<void> {
+  const font = new FontFace("TAHOMA", "url(/analysis/TAHOMA.ttf)")
+  document.fonts.add(font)
+  font.load()
+  await font.loaded
+}
+
 export async function getCandleData() {
   let res: any = await fetchJson({
     url: InfoUrl, body: {
