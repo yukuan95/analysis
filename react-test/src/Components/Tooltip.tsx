@@ -14,7 +14,7 @@ const Tooltip = ({ title, children }: { title: React.ReactNode, children: React.
       trigger={trigger}
       title={title}
     >
-      <span className={css`color:${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>{children}</span>
+      <span className={css`color: ${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>{children}</span>
     </AntdTooltip>
   </>
 }

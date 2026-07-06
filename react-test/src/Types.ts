@@ -4,6 +4,7 @@ export interface Data {
   dateValue: DateValue[]
   errorLog: string
   hyper: Hyper
+  candleData: Array<CandleItem>
 }
 
 export interface AnalyseData {
@@ -108,4 +109,17 @@ export interface UserFill {
   size: number
   fee: number
   closedPnl: number
+}
+
+export interface CandleItem {
+  t: number
+  T: number
+  s: string
+  i: string
+  o: string
+  c: string
+  h: string
+  l: string
+  v: string
+  n: number
 }

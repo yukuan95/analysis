@@ -1,4 +1,4 @@
-import type { Hyper, Data } from './Types'
+import type { Hyper, Data, CandleItem } from './Types'
 import { Decimal } from "decimal.js"
 import _numeral from 'numeral'
 import JSZip from 'JSZip'
@@ -28,8 +28,8 @@ export async function getFonts(): Promise<void> {
   await font.loaded
 }
 
-export async function getCandleData() {
-  let res: any = await fetchJson({
+export async function getCandleData(): Promise<Array<CandleItem>> {
+  const res: any = await fetchJson({
     url: InfoUrl, body: {
       "type": "candleSnapshot",
       "req": {
@@ -38,7 +38,7 @@ export async function getCandleData() {
       }
     }
   })
-  console.log('getCandleData', res)
+  return res
 }
 
 export async function getHyperData(address: string): Promise<Hyper> {

@@ -14,7 +14,16 @@ function _App() {
   const state = useProxy(_state)
   return <>
     <div className={css`margin-top: 20px;`}></div>
-    <div className={css`display: flex; justify-content: end;`}>
+    <div className={css`display: flex; justify-content: space-between;`}>
+      <div className={css`display: flex; align-items: center; gap: 5px;`}>
+        <Tooltip
+          title={(state.data?.priceLog?.nowTime ?? '').slice(0, 16)}
+        > <span className={css`user-select: none;`}>
+            {(state.data?.priceLog?.startTime ?? '').slice(0, 16)}
+          </span>
+        </Tooltip>
+        <span className={css`user-select: none; color: ${state.data?.errorLog ? '#F23645FF' : '#089981FF'};`}>●</span>
+      </div>
       <Switch
         checked={state.isDarkMode}
         onChange={() => state.isDarkMode = !state.isDarkMode}
