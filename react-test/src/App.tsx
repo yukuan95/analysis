@@ -17,9 +17,9 @@ function _App() {
     <div className={css`display: flex; justify-content: space-between;`}>
       <div className={css`display: flex; align-items: center; gap: 5px;`}>
         <Tooltip
-          title={lib.timeSlice(state.data?.priceLog?.nowTime ?? '', true)}
+          title={state.data?.analyseData?.startTimeReason ?? ''}
         > <span className={css`user-select: none;`}>
-            {lib.timeSlice(state.data?.priceLog?.startTime ?? '', true)}
+            {lib.timeSlice(state.data?.analyseData?.startTime ?? '', true)}
           </span>
         </Tooltip>
         <span className={css`user-select: none; color: ${state.data?.errorLog ? '#F23645FF' : '#089981FF'};`}>●</span>
