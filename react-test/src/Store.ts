@@ -43,6 +43,7 @@ function onMount(state: StateType, useMount: any) {
     state.data = res[0]
     state.data.candleData = res[1]
     state.isLoading = false
+    console.log(JSON.parse(JSON.stringify(state.data)))
   })
 }
 

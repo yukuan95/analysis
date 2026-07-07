@@ -9,6 +9,7 @@ export interface Data {
 
 export interface AnalyseData {
   startTime: string
+  startTimeReason: string
   analyseTime: string
   lever: number
   lastNMonth: LastNmonth[]

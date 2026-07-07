@@ -6,10 +6,32 @@ import JSZip from 'JSZip'
 const InfoUrl = 'https://api.hyperliquid.xyz/info'
 const DataUrl = 'https://bucket-20260428.oss-ap-northeast-1.aliyuncs.com/data.zip'
 
-export const numeral = (_numeral as any).default || _numeral
-
 export function add(n1: number, n2: number): number {
   return Number(Decimal(n1).add(Decimal(n2)))
+}
+
+export function toFixedNumber(f: number | string, n: number): number {
+  return toNumber(toFixedString(f, n))
+}
+
+export function toFixedString(value: number | string, precision: number): string {
+  const zeros = '0'.repeat(precision)
+  const pattern = precision > 0 ? `0.${zeros}` : '0'
+  const numeral = (_numeral as any).default || _numeral
+  return numeral(value).format(pattern)
+}
+
+export function formatNumber(value: number | string, precision: number): string {
+  const zeros = '0'.repeat(precision)
+  const pattern = precision > 0 ? `0,0.${zeros}` : '0,0'
+  const numeral = (_numeral as any).default || _numeral
+  return numeral(value).format(pattern)
+}
+
+export function toNumber(f: number | string): number {
+  const res = Number(f)
+  console.assert(!isNaN(res))
+  return res
 }
 
 export async function fetchJson(data: { url: string, headers?: any, method?: any, body?: any }): Promise<any> {
@@ -267,4 +289,22 @@ export function monthPlus(yearMonth: string, n: number): string {
     year -= 1
   }
   return year + '-' + (String(month).length === 1 ? `0${month}` : `${month}`)
+}
+
+export function timeSlice(time: string, withTimezone: boolean = false): string {
+  if (!time) {
+    return ''
+  }
+  if (withTimezone === false) {
+    return time.slice(0, 16)
+  } else {
+    return time.slice(0, 16) + ' ' + getTimezoneFromTime(time)
+  }
+}
+
+export function getTimezoneFromTime(time: string): string {
+  if (!time) {
+    return ''
+  }
+  return time.slice(-3)
 }

@@ -31,6 +31,7 @@ async function main() {
   await copy(relativeRoot('../react-test/dist/favicon.svg'), relativeRoot('../favicon.svg'))
   await copy(relativeRoot('../react-test/dist/TAHOMA.ttf'), relativeRoot('../TAHOMA.ttf'))
   await copy(relativeRoot('../react-test/dist/index.html'), relativeRoot('../index.html'))
+  console.log('===')
 }
 
 main()
