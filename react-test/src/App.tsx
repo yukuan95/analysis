@@ -7,23 +7,61 @@ import { Tooltip } from './Components/Tooltip'
 import { useMount } from "@reactuses/core"
 import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import * as lib from './Lib'
 
 function _App() {
   const state = useProxy(_state)
+  const startTimeReason = state.data?.analyseData?.startTimeReason ?? ''
+  const startTime = state.data?.analyseData?.startTime ?? ''
+  const isError = () => {
+    if (state.data?.errorLog) {
+      return true
+    }
+    if (state.data?.analyseData?.analyseTime) {
+      const analyseTime = lib.stringTimeToMilliTime(state.data.analyseData.analyseTime)
+      const nowTime = lib.stringTimeToMilliTime(lib.getNowStringTime())
+      if (nowTime - analyseTime > 15 * 60 * 1000) {
+        return true
+      }
+    }
+    return false
+  }
+  const [hour, setHour] = useState('')
+  useMount(async () => {
+    while (true) {
+      setHour(lib.timeHoursC(startTime))
+      await lib.sleep(2000)
+    }
+  })
+
+  const [yearMonthRate, setYearMonthRate] = useState('')
+  const [yearMonthRate2, setYearMonthRate2] = useState('')
+  useEffect(() => {
+    const rate = state.data?.analyseData?.orderMonth?.find?.((item) => {
+      return item.month === state.yearMonth
+    })?.perMonthS ?? ''
+    const rate2 = state.data?.analyseData?.orderMonth?.find?.((item) => {
+      return item.month === state.yearMonth
+    })?.perMonthS2 ?? ''
+    setYearMonthRate(rate ? lib.toFixedString(rate, 4) : lib.toFixedString(1, 4))
+    setYearMonthRate2(rate2 ? lib.toFixedString(rate2, 4) : lib.toFixedString(1, 4))
+  }, [state.yearMonth])
   return <>
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between;`}>
-      <div className={css`display: flex; align-items: center; gap: 5px;`}>
-        <Tooltip
-          title={state.data?.analyseData?.startTimeReason ?? ''}
-        > <span className={css`user-select: none;`}>
-            {lib.timeSlice(state.data?.analyseData?.startTime ?? '', true)}
-          </span>
-        </Tooltip>
-        <span className={css`user-select: none; color: ${state.data?.errorLog ? '#F23645FF' : '#089981FF'};`}>●</span>
-      </div>
+      <Tooltip title={<div className={css`display: flex; align-items: center; flex-direction: column; `}>
+        <div>{startTimeReason.split(',')?.[0]}</div>
+        <div>{startTimeReason.split(',')?.[1]}</div>
+      </div>}>
+        <span className={css`user-select: none;`}>
+          <div className={css`display: flex; align-items: center; gap: 5px;`}>
+            <span>{lib.timeSlice(startTime, true)}</span>
+            {hour ? <span>{hour}</span> : <></>}
+            <span className={css`color: ${isError() ? '#F23645FF' : '#089981FF'};`}>●</span>
+          </div>
+        </span>
+      </Tooltip>
       <Switch
         checked={state.isDarkMode}
         onChange={() => state.isDarkMode = !state.isDarkMode}
@@ -52,7 +90,7 @@ function _App() {
     <div className={css`display: flex; justify-content: space-between;`}>
       <div>
         <MonthPicker
-          value={state.yearMonth} width={'110px'} onChange={(val) => state.yearMonth = val}
+          value={state.yearMonth} width={'165px'} onChange={(val) => state.yearMonth = val}
         ></MonthPicker>
       </div>
       <div className={css`display: flex; gap: 10px;`}>
@@ -63,13 +101,29 @@ function _App() {
           onClick={() => state.yearMonth = lib.monthPlus(state.yearMonth, 1)}
         ></RightArrowButton>
       </div>
-      <div>
-        <Dropdown
-          value={state.dropdownTableValue} width={'110px'} array={state.dropdownTableArray}
-          onChange={(val) => state.dropdownTableValue = val}
-        ></Dropdown>
-      </div>
     </div>
+    <div className={css`margin-top: 20px;`}></div>
+    <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
+      <div className={css`display: flex; gap: 20px;`}>
+        <Tooltip title={yearMonthRate2}>
+          <span className={css`user-select: none;`}>{yearMonthRate}</span>
+        </Tooltip>
+        <Tooltip title={<>
+          <div>{state.data?.hyper.price ?? ''}</div>
+          <div>{state.data?.hyper.position?.entryPrice ?? ''}</div>
+        </>}>
+          <span className={css`user-select: none; display: flex;`}>
+            <div>{state.data?.hyper.position?.positionValue ?? ''}</div>
+            <div className={css`padding-left: 5px; padding-right: 5px;`}> | </div>
+            <div>{state.data?.hyper.position?.unrealizedPnl ?? ''}</div>
+          </span>
+        </Tooltip>
+      </div>
+      <Dropdown
+        value={state.dropdownTableValue} width={'106px'} array={state.dropdownTableArray}
+        onChange={(val) => state.dropdownTableValue = val}
+      ></Dropdown>
+    </div >
     <div className={css`height: 900px;`}></div>
   </>
 }
@@ -87,13 +141,13 @@ function App() {
         components: { Table: { cellPaddingBlockSM: 0, headerBorderRadius: 0 } },
       }}
     >
-      {state.isLoading
-        ? <Spin styles={{
+      {state.isLoading ?
+        <Spin styles={{
           root: { backgroundColor: `${state.isDarkMode ? '#292929FF' : '#FFFFFFFF'}`, },
           indicator: { color: `${state.isDarkMode ? '#3F96FF' : '#3F96FF'}`, },
-        }} fullscreen />
-        : <div className={css`display: flex; justify-content: center; font-family: 'TAHOMA';`}>
-          <div className={css`width: 355px; padding-left: 5px; padding-right: 5px;`}>
+        }} fullscreen /> :
+        <div className={css`display: flex; justify-content: center; font-family: 'TAHOMA';`}>
+          <div className={css`min-width: 355px; padding-left: 5px; padding-right: 5px;`}>
             <_App></_App>
           </div>
         </div>}

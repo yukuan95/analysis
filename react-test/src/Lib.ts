@@ -3,8 +3,10 @@ import { Decimal } from "decimal.js"
 import _numeral from 'numeral'
 import JSZip from 'JSZip'
 
+const numeral = (_numeral as any).default || _numeral
 const InfoUrl = 'https://api.hyperliquid.xyz/info'
 const DataUrl = 'https://bucket-20260428.oss-ap-northeast-1.aliyuncs.com/data.zip'
+const WsUrl = 'wss://api.hyperliquid.xyz/ws'
 
 export function add(n1: number, n2: number): number {
   return Number(Decimal(n1).add(Decimal(n2)))
@@ -17,14 +19,12 @@ export function toFixedNumber(f: number | string, n: number): number {
 export function toFixedString(value: number | string, precision: number): string {
   const zeros = '0'.repeat(precision)
   const pattern = precision > 0 ? `0.${zeros}` : '0'
-  const numeral = (_numeral as any).default || _numeral
   return numeral(value).format(pattern)
 }
 
 export function formatNumber(value: number | string, precision: number): string {
   const zeros = '0'.repeat(precision)
   const pattern = precision > 0 ? `0,0.${zeros}` : '0,0'
-  const numeral = (_numeral as any).default || _numeral
   return numeral(value).format(pattern)
 }
 
@@ -41,13 +41,6 @@ export async function fetchJson(data: { url: string, headers?: any, method?: any
   body = body ?? {}
   let res = await fetch(url, { method, headers, body: JSON.stringify(body) })
   return await res.json()
-}
-
-export async function getFonts(): Promise<void> {
-  const font = new FontFace("TAHOMA", "url(/analysis/TAHOMA.ttf)")
-  document.fonts.add(font)
-  font.load()
-  await font.loaded
 }
 
 export async function getCandleData(): Promise<Array<CandleItem>> {
@@ -217,6 +210,63 @@ export async function getData(): Promise<Data> {
   return data
 }
 
+export function getWsData(accountAddress: string, onmessage: (data: any) => void) {
+  const socket = new WebSocket(WsUrl)
+  socket.onopen = () => {
+    socket.send(JSON.stringify({
+      "method": "subscribe",
+      "subscription": { "type": "allMids" }
+    }))
+    socket.send(JSON.stringify({
+      "method": "subscribe",
+      "subscription": {
+        "type": "candle",
+        "coin": "BTC",
+        "interval": "15m",
+      }
+    }))
+    socket.send(JSON.stringify({
+      "method": "subscribe",
+      "subscription": {
+        "type": "clearinghouseState",
+        "user": accountAddress,
+      }
+    }))
+  }
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data.channel === 'allMids') {
+      const price = Number.parseFloat(data?.data?.mids?.BTC)
+      if (!Number.isNaN(price)) {
+        onmessage({ channel: 'allMids', price: formatNumber(price, 1) })
+      }
+    }
+    if (data.channel === 'candle') {
+      if (data?.data) {
+        onmessage({ channel: 'candle', data: data.data })
+      }
+    }
+    if (data.channel === 'clearinghouseState') {
+      const assetPositions = data.data.clearinghouseState?.assetPositions ?? []
+      const item = assetPositions.find((item: any) => item.position?.coin === 'BTC')
+      if (item.position) {
+        let { szi, entryPx, positionValue, unrealizedPnl } = item.position
+        if (szi.at(0) === '-') {
+          positionValue = '-' + positionValue
+        }
+        onmessage({
+          channel: 'clearinghouseState', position: {
+            entryPrice: formatNumber(entryPx, 1),
+            positionValue: formatNumber(toFixedNumber(positionValue, 4) / 6, 2),
+            unrealizedPnl: formatNumber(unrealizedPnl, 2),
+          }
+        })
+      }
+    }
+  }
+}
+
 export function stringTimeWithZone(time: string): string {
   return milliTimeToStringTime(stringTimeToMilliTime(time))
 }
@@ -307,4 +357,24 @@ export function getTimezoneFromTime(time: string): string {
     return ''
   }
   return time.slice(-3)
+}
+
+export function timeHoursC(startTime: string): string {
+  const nowTime = getNowStringTime()
+  if (!(nowTime && startTime)) {
+    return ''
+  }
+  const sa = stringTimeToMilliTime(startTime) - stringTimeToMilliTime(nowTime)
+  const res = toFixedNumber(sa / 1000 / 60 / 60, 4)
+  const n1 = Number.parseInt(String(res))
+  const n2 = Number.parseInt(String(60 * (res - n1)))
+  if (res > 0) {
+    return String(n1).padStart(2, '0') + ':' + String(n2).padStart(2, '0')
+  } else {
+    return ''
+  }
+}
+
+export function sleep(n: number): Promise<void> {
+  return new Promise(res => setTimeout(res, n))
 }

@@ -88,9 +88,16 @@ export interface DateValue {
 }
 
 export interface Hyper {
+  price?: string
   accountValue: AccountValue[]
   totalPnL: TotalPnL[]
   userFills: UserFill[]
+  position?: {
+    entryPrice: string
+    positionValue: string
+    unrealizedPnl: string
+  }
+  candleArray?: any[]
 }
 
 export interface AccountValue {
