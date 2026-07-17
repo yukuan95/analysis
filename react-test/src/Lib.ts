@@ -8,6 +8,8 @@ const InfoUrl = 'https://api.hyperliquid.xyz/info'
 const DataUrl = 'https://bucket-20260428.oss-ap-northeast-1.aliyuncs.com/data.zip'
 const WsUrl = 'wss://api.hyperliquid.xyz/ws'
 
+export { numeral }
+
 export function add(n1: number, n2: number): number {
   return Number(Decimal(n1).add(Decimal(n2)))
 }
@@ -170,6 +172,7 @@ export async function getData(): Promise<Data> {
   const res = await Promise.all(promiseArray)
   const { accountValue, totalPnL, userFills } = res[1]
   data.hyper = { accountValue, totalPnL, userFills, candleData: mapCandle(res[0]) }
+  data.hyper.price = data.hyper.candleData.at(-1).close
   data.analyseData.analyseTime = stringTimeWithZone(data.analyseData.analyseTime)
   data.analyseData.startTime = stringTimeWithZone(data.analyseData.startTime)
   data.priceLog.nowTime = stringTimeWithZone(data.priceLog.nowTime)
@@ -254,7 +257,7 @@ export function getWsData(accountAddress: string, onmessage: (data: any) => void
     if (data.channel === 'allMids') {
       const price = Number.parseFloat(data?.data?.mids?.BTC)
       if (!Number.isNaN(price)) {
-        onmessage({ channel: 'allMids', price: formatNumber(price, 1) })
+        onmessage({ channel: 'allMids', price })
       }
     }
     if (data.channel === 'candle') {

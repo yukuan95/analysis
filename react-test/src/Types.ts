@@ -87,7 +87,7 @@ export interface DateValue {
 }
 
 export interface Hyper {
-  price?: string
+  price?: number
   chg24Hour?: number
   accountValue: AccountValue[]
   totalPnL: TotalPnL[]

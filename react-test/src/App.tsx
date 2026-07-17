@@ -7,6 +7,7 @@ import { Tooltip } from './Components/Tooltip'
 import { useEffect, useState } from 'react'
 import { useMount } from "@reactuses/core"
 import { Candle } from './PageComp/Candle'
+import { Price } from './PageComp/Price'
 import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
 import * as lib from './Lib'
@@ -69,6 +70,12 @@ function _App() {
         checkedChildren="Dark" unCheckedChildren="Light" />
     </div>
     <div className={css`margin-top: 20px;`}></div>
+    <div><Price></Price></div>
+    <div className={css`margin-top: 10px;`}></div>
+    <div className={css`height: 1px; width: 345px; border-radius: 2px; background-color: #505050FF;`}></div>
+    <div className={css`margin-top: 10px;`}></div>
+    <div><Candle></Candle></div>
+    <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
       <div>
         {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}>
@@ -125,9 +132,7 @@ function _App() {
         onChange={(val) => state.dropdownTableValue = val}
       ></Dropdown>
     </div >
-    <div>
-      <Candle></Candle>
-    </div>
+
     <div className={css`height: 900px;`}></div>
   </>
 }
