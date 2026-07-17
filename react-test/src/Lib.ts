@@ -131,6 +131,17 @@ export async function getHyperData(address: string): Promise<Hyper> {
   }
 }
 
+export function mapCandle(data: Array<{ o: string; c: string; h: string; l: string; t: number; }>)
+  : Array<{ open: number; close: number; high: number; low: number; time: number; }> {
+  return data.map((item: any) => {
+    return {
+      time: item.t / 1000,
+      open: Number(item.o), high: Number(item.h),
+      low: Number(item.l), close: Number(item.c),
+    }
+  })
+}
+
 export async function getData(): Promise<Data> {
   const url = DataUrl
   const response = await fetch(url, { cache: 'no-store' })
@@ -151,10 +162,14 @@ export async function getData(): Promise<Data> {
       data['errorLog'] = textContent.trim()
     }
   }
+  const promiseArray: any = [getCandleData()]
   const address = data?.priceLog?.accountAddress ?? ''
   if (address) {
-    data.hyper = await getHyperData(address)
+    promiseArray.push(getHyperData(address))
   }
+  const res = await Promise.all(promiseArray)
+  const { accountValue, totalPnL, userFills } = res[1]
+  data.hyper = { accountValue, totalPnL, userFills, candleData: mapCandle(res[0]) }
   data.analyseData.analyseTime = stringTimeWithZone(data.analyseData.analyseTime)
   data.analyseData.startTime = stringTimeWithZone(data.analyseData.startTime)
   data.priceLog.nowTime = stringTimeWithZone(data.priceLog.nowTime)
@@ -244,7 +259,7 @@ export function getWsData(accountAddress: string, onmessage: (data: any) => void
     }
     if (data.channel === 'candle') {
       if (data?.data) {
-        onmessage({ channel: 'candle', data: data.data })
+        onmessage({ channel: 'candle', candleData: mapCandle([data.data])[0] })
       }
     }
     if (data.channel === 'clearinghouseState') {

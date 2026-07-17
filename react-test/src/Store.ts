@@ -1,10 +1,8 @@
 import { proxy } from 'valtio';
 import type { Data } from './Types'
 import * as lib from './Lib'
-// import a1 from './getData'
-// import a2 from './getCandleData'
 
-type StateType = {
+export type StateType = {
   isDarkMode: boolean,
   isLoading: boolean,
   yearMonth: string,
@@ -36,26 +34,10 @@ function onEffect(state: StateType, useEffect: any) {
 
 function onMount(state: StateType, useMount: any) {
   useMount(async () => {
-    state.isLoading = true
-    const res: any = await Promise.all([lib.getData(), lib.getCandleData()])
-    if (res[0] && res[1]) {
-      res[0].candleData = res[1]
-      state.data = res[0]
-    } else {
-      throw 'onMount get error'
-    }
-
-    // state.isLoading = true
-    // const res: any = await Promise.all([new Promise(res => res(a1)), new Promise(res => res(a2))])
-    // if (res[0] && res[1]) {
-    //   res[0].candleData = res[1]
-    //   state.data = res[0]
-    // } else {
-    //   throw 'onMount get error'
-    // }
-
-    state.isLoading = false
     initTheme(state)
+    state.isLoading = true
+    state.data = await lib.getData()
+    state.isLoading = false
     initWebsocket(state)
   })
 }
@@ -73,7 +55,7 @@ function initWebsocket(state: StateType) {
         hyper.price = data.price
       }
       if (data.channel === 'candle') {
-        hyper.candleArray ? hyper.candleArray.push(data.data) : hyper.candleArray = [data.data]
+        hyper.candle = data.candleData
       }
       if (data.channel === 'clearinghouseState') {
         hyper.position = data.position

@@ -4,7 +4,6 @@ export interface Data {
   dateValue: DateValue[]
   errorLog: string
   hyper: Hyper
-  candleData: Array<CandleItem>
 }
 
 export interface AnalyseData {
@@ -89,6 +88,7 @@ export interface DateValue {
 
 export interface Hyper {
   price?: string
+  chg24Hour?: number
   accountValue: AccountValue[]
   totalPnL: TotalPnL[]
   userFills: UserFill[]
@@ -97,7 +97,8 @@ export interface Hyper {
     positionValue: string
     unrealizedPnl: string
   }
-  candleArray?: any[]
+  candle?: CandleItem
+  candleData?: Array<CandleItem>
 }
 
 export interface AccountValue {
@@ -120,14 +121,9 @@ export interface UserFill {
 }
 
 export interface CandleItem {
-  t: number
-  T: number
-  s: string
-  i: string
-  o: string
-  c: string
-  h: string
-  l: string
-  v: string
-  n: number
+  open: number;
+  close: number;
+  high: number;
+  low: number;
+  time: number;
 }

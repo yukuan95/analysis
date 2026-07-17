@@ -4,10 +4,11 @@ import { Switch, Spin, ConfigProvider, theme } from 'antd'
 import { MonthPicker } from './Components/MonthPicker'
 import { Dropdown } from './Components/Dropdown'
 import { Tooltip } from './Components/Tooltip'
+import { useEffect, useState } from 'react'
 import { useMount } from "@reactuses/core"
+import { Candle } from './PageComp/Candle'
 import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
-import { useEffect, useState } from 'react'
 import * as lib from './Lib'
 
 function _App() {
@@ -109,13 +110,13 @@ function _App() {
           <span className={css`user-select: none;`}>{yearMonthRate}</span>
         </Tooltip>
         <Tooltip title={<>
-          <div>{state.data?.hyper.price ?? ''}</div>
-          <div>{state.data?.hyper.position?.entryPrice ?? ''}</div>
+          <div>{state.data?.hyper?.price ?? ''}</div>
+          <div>{state.data?.hyper?.position?.entryPrice ?? ''}</div>
         </>}>
           <span className={css`user-select: none; display: flex;`}>
-            <div>{state.data?.hyper.position?.positionValue ?? ''}</div>
+            <div>{state.data?.hyper?.position?.positionValue ?? ''}</div>
             <div className={css`padding-left: 5px; padding-right: 5px;`}> | </div>
-            <div>{state.data?.hyper.position?.unrealizedPnl ?? ''}</div>
+            <div>{state.data?.hyper?.position?.unrealizedPnl ?? ''}</div>
           </span>
         </Tooltip>
       </div>
@@ -124,6 +125,9 @@ function _App() {
         onChange={(val) => state.dropdownTableValue = val}
       ></Dropdown>
     </div >
+    <div>
+      <Candle></Candle>
+    </div>
     <div className={css`height: 900px;`}></div>
   </>
 }
