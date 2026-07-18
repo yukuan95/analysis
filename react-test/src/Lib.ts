@@ -257,6 +257,7 @@ export function getWsData(accountAddress: string, onmessage: (data: any) => void
     if (data.channel === 'allMids') {
       const price = Number.parseFloat(data?.data?.mids?.BTC)
       if (!Number.isNaN(price)) {
+        document.title = formatNumber(price, 1)
         onmessage({ channel: 'allMids', price })
       }
     }

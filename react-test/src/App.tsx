@@ -11,6 +11,7 @@ import { Price } from './PageComp/Price'
 import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
 import * as lib from './Lib'
+import { Table1, Table2, Table3, Table4, Table5 } from './PageComp/Table'
 
 function _App() {
   const state = useProxy(_state)
@@ -117,7 +118,7 @@ function _App() {
           <span className={css`user-select: none;`}>{yearMonthRate}</span>
         </Tooltip>
         <Tooltip title={<>
-          <div>{state.data?.hyper?.price ?? ''}</div>
+          <div>{state.data?.hyper?.price ? lib.formatNumber(state.data.hyper.price, 1) : ''}</div>
           <div>{state.data?.hyper?.position?.entryPrice ?? ''}</div>
         </>}>
           <span className={css`user-select: none; display: flex;`}>
@@ -132,7 +133,13 @@ function _App() {
         onChange={(val) => state.dropdownTableValue = val}
       ></Dropdown>
     </div >
-
+    <div className={css`margin-top: 20px;`}></div>
+    {state.dropdownTableValue === 'Hyper' ? <Table1></Table1> : <></>}
+    {state.dropdownTableValue === 'Analysis' ? <Table2></Table2> : <></>}
+    <div className={css`margin-top: 20px;`}></div>
+    <Table3></Table3>
+    <Table4></Table4>
+    <Table5></Table5>
     <div className={css`height: 900px;`}></div>
   </>
 }
