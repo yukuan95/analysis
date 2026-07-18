@@ -35,12 +35,12 @@ export const Table1 = () => {
           {item.time.slice(0, 16)}
         </>)}></Column>
       <Column className={heightCss} align="center" title="price" dataIndex="price" render={(_, item) => (<>
-        <Tooltip title={getGrid(item, [['fee', 'fee'], ['pnl', 'closedPnl']])} placement='left'>
+        <Tooltip title={getGrid(item, [['fee', 'fee'], ['size', 'size']])} placement='left'>
           {item.price}
         </Tooltip>
       </>)}></Column>
       <Column className={heightCss} align="center" title="side" dataIndex="side"></Column>
-      <Column className={heightCss} align="center" title="size" dataIndex="size"></Column>
+      <Column className={heightCss} align="center" title="pnl" dataIndex="closedPnl"></Column>
     </Table >
   </>
 }
