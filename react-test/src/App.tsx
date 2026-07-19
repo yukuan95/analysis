@@ -1,4 +1,5 @@
 import { LeftArrowButton, RightArrowButton } from './Components/ArrowButton'
+import { Table1, Table2, Table3, Table4, Table5 } from './PageComp/Table'
 import { state as _state, onMount, onEffect } from './Store'
 import { Switch, Spin, ConfigProvider, theme } from 'antd'
 import { MonthPicker } from './Components/MonthPicker'
@@ -11,7 +12,6 @@ import { Price } from './PageComp/Price'
 import { useProxy } from 'valtio/utils'
 import { css } from '@emotion/css'
 import * as lib from './Lib'
-import { Table1, Table2, Table3, Table4, Table5 } from './PageComp/Table'
 
 function _App() {
   const state = useProxy(_state)
@@ -37,7 +37,6 @@ function _App() {
       await lib.sleep(2000)
     }
   })
-
   const [yearMonthRate, setYearMonthRate] = useState('')
   const [yearMonthRate2, setYearMonthRate2] = useState('')
   useEffect(() => {
@@ -138,7 +137,9 @@ function _App() {
     {state.dropdownTableValue === 'Analysis' ? <Table2></Table2> : <></>}
     <div className={css`margin-top: 20px;`}></div>
     <Table3></Table3>
+    <div className={css`margin-top: 20px;`}></div>
     <Table4></Table4>
+    <div className={css`margin-top: 20px;`}></div>
     <Table5></Table5>
     <div className={css`height: 900px;`}></div>
   </>

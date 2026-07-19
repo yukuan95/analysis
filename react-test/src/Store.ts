@@ -15,7 +15,7 @@ export type StateType = {
 
 const stateInit: StateType = {
   isDarkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
-  isLoading: false,
+  isLoading: true,
   dropdownGraphArray: ['Total Balance', 'Account Value', 'Total PnL'],
   dropdownGraphValue: 'Total Balance',
   yearMonth: lib.getNowStringTime().slice(0, 7),
