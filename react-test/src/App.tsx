@@ -15,6 +15,7 @@ import { css } from '@emotion/css'
 import * as lib from './Lib'
 
 function _App() {
+  const [isShowChart, setShowChart] = useState(false)
   const state = useProxy(_state)
   const startTimeReason = state.data?.analyseData?.startTimeReason ?? ''
   const startTime = state.data?.analyseData?.startTime ?? ''
@@ -71,35 +72,38 @@ function _App() {
         checkedChildren="Dark" unCheckedChildren="Light" />
     </div>
     <div className={css`margin-top: 20px;`}></div>
-    <div><Price></Price></div>
+    <div onDoubleClick={() => setShowChart(!isShowChart)}><Price></Price></div>
     <div className={css`margin-top: 10px;`}></div>
     <div className={css`height: 1px; width: 345px; border-radius: 2px; background-color: #505050FF;`}></div>
     <div className={css`margin-top: 10px;`}></div>
     <div><Candle></Candle></div>
     <div className={css`margin-top: 20px;`}></div>
-    <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
-      <div>
-        {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}>
-          <span className={css`user-select: none;`}>
-            <span>{state.data.priceLog.accountAddress.slice(0, 6)}</span>
-            <span>...</span>
-            <span>{state.data.priceLog.accountAddress.slice(-4)}</span>
-          </span>
-        </Tooltip> : <></>}
+    {isShowChart ? <>
+      <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
+        <div>
+          {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}>
+            <span className={css`user-select: none;`}>
+              <span>{state.data.priceLog.accountAddress.slice(0, 6)}</span>
+              <span>...</span>
+              <span>{state.data.priceLog.accountAddress.slice(-4)}</span>
+            </span>
+          </Tooltip> : <></>}
+        </div>
+        <div>
+          <Dropdown
+            value={state.dropdownGraphValue} width={'150px'}
+            array={state.dropdownGraphArray}
+            onChange={(val) => state.dropdownGraphValue = val}
+          ></Dropdown>
+        </div>
       </div>
-      <div>
-        <Dropdown
-          value={state.dropdownGraphValue} width={'150px'}
-          array={state.dropdownGraphArray}
-          onChange={(val) => state.dropdownGraphValue = val}
-        ></Dropdown>
-      </div>
-    </div>
-    <div className={css`margin-top: 20px;`}></div>
-    {state.dropdownGraphValue === 'Total Balance' ? <Chart1></Chart1> : <></>}
-    {state.dropdownGraphValue === 'Account Value' ? <Chart2></Chart2> : <></>}
-    {state.dropdownGraphValue === 'Total PnL' ? <Chart3></Chart3> : <></>}
-    <div className={css`margin-top: 20px;`}></div>
+      <div className={css`margin-top: 20px;`}></div>
+      {state.dropdownGraphValue === 'Total Balance' ? <Chart1></Chart1> : <></>}
+      {state.dropdownGraphValue === 'Account Value' ? <Chart2></Chart2> : <></>}
+      {state.dropdownGraphValue === 'Total PnL' ? <Chart3></Chart3> : <></>}
+      <div className={css`margin-top: 20px;`}></div></>
+      : <></>
+    }
     <div className={css`display: flex; justify-content: space-between;`}>
       <div>
         <MonthPicker
