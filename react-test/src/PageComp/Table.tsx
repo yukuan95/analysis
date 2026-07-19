@@ -100,7 +100,6 @@ export const Table2 = () => {
 export const Table3 = () => {
   const state = useProxy(_state)
   const data = useMemo(() => {
-    console.log('==3')
     const orderYear = state.data?.analyseData?.orderYear ?? []
     return orderYear.map((item) => {
       return {
@@ -120,7 +119,6 @@ export const Table3 = () => {
 export const Table4 = () => {
   const state = useProxy(_state)
   const data = useMemo(() => {
-    console.log('==4')
     const lastNMonth = state.data?.analyseData?.lastNMonth ?? []
     return lastNMonth.map((item) => {
       return {
@@ -140,7 +138,6 @@ export const Table4 = () => {
 export const Table5 = () => {
   const state = useProxy(_state)
   const data = useMemo(() => {
-    console.log('==5')
     const minNMonth = state.data?.analyseData?.minNMonth ?? []
     const _data: any[] = []
     minNMonth.forEach((item) => {
