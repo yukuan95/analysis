@@ -122,7 +122,10 @@ function _App() {
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
       <div className={css`display: flex; gap: 20px;`}>
-        <Tooltip title={yearMonthRate2}>
+        <Tooltip title={<>
+          <div>{lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}</div>
+          <div>{yearMonthRate2}</div>
+        </>}>
           <span className={css`user-select: none;`}>{yearMonthRate}</span>
         </Tooltip>
         <Tooltip title={<>
