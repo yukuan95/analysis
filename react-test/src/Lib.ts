@@ -81,7 +81,7 @@ export async function getHyperData(address: string): Promise<Hyper> {
   const totalPnL = pnlHistory.map((item: any) => {
     return { time: milliTimeToStringTime(item[0]), value: Number(item[1]) }
   })
-  let data = userFills
+  let data = userFills ?? []
   data = data.filter((item: any) => item.coin === 'BTC').map((item: any) => {
     let side = item.side
     if (item.side === 'A') {

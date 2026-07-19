@@ -2,6 +2,7 @@ import { LeftArrowButton, RightArrowButton } from './Components/ArrowButton'
 import { Table1, Table2, Table3, Table4, Table5 } from './PageComp/Table'
 import { state as _state, onMount, onEffect } from './Store'
 import { Switch, Spin, ConfigProvider, theme } from 'antd'
+import { Chart1, Chart2, Chart3 } from './PageComp/Chart'
 import { MonthPicker } from './Components/MonthPicker'
 import { Dropdown } from './Components/Dropdown'
 import { Tooltip } from './Components/Tooltip'
@@ -95,6 +96,10 @@ function _App() {
       </div>
     </div>
     <div className={css`margin-top: 20px;`}></div>
+    {state.dropdownGraphValue === 'Total Balance' ? <Chart1></Chart1> : <></>}
+    {state.dropdownGraphValue === 'Account Value' ? <Chart2></Chart2> : <></>}
+    {state.dropdownGraphValue === 'Total PnL' ? <Chart3></Chart3> : <></>}
+    <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between;`}>
       <div>
         <MonthPicker
@@ -131,7 +136,7 @@ function _App() {
         value={state.dropdownTableValue} width={'106px'} array={state.dropdownTableArray}
         onChange={(val) => state.dropdownTableValue = val}
       ></Dropdown>
-    </div >
+    </div>
     <div className={css`margin-top: 20px;`}></div>
     {state.dropdownTableValue === 'Hyper' ? <Table1></Table1> : <></>}
     {state.dropdownTableValue === 'Analysis' ? <Table2></Table2> : <></>}
