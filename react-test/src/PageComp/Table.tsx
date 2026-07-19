@@ -137,6 +137,11 @@ export const Table4 = () => {
 
 export const Table5 = () => {
   const state = useProxy(_state)
+  const getNumberLength = (n: number) => {
+    const length = String(Number.parseInt(n + '')).length
+    if (6 - length > 0) { return 6 - length }
+    else { return 0 }
+  }
   const data = useMemo(() => {
     const minNMonth = state.data?.analyseData?.minNMonth ?? []
     const _data: any[] = []
@@ -145,7 +150,7 @@ export const Table5 = () => {
         _data.push({
           key: uuidv4(), isFirst: index === 0,
           N: item.N, timeN: arrayItem.timeN,
-          valueN: lib.formatNumber(arrayItem.valueN, 5),
+          valueN: lib.formatNumber(arrayItem.valueN, getNumberLength(arrayItem.valueN)),
         })
       })
     })
