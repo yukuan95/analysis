@@ -30,6 +30,12 @@ export function formatNumber(value: number | string, precision: number): string 
   return numeral(value).format(pattern)
 }
 
+export function formatPercent(value: number | string, precision: number): string {
+  const zeros = '0'.repeat(precision)
+  const pattern = precision > 0 ? `0.${zeros}%` : '0%'
+  return numeral(value).format(pattern)
+}
+
 export function toNumber(f: number | string): number {
   const res = Number(f)
   console.assert(!isNaN(res))

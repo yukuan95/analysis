@@ -1,7 +1,7 @@
-import { css, cx } from '@emotion/css'
-import { useProxy } from 'valtio/utils'
-import { numeral } from '../Lib'
 import { state as _state } from '../Store'
+import { useProxy } from 'valtio/utils'
+import { css, cx } from '@emotion/css'
+import * as lib from '../Lib'
 
 // @ts-ignore
 enum Color {
@@ -64,9 +64,9 @@ export const Price = () => {
     <div className={cx(s.jsEnd, s.titleFont)}>Last Price</div>
     <div className={cx(s.jsEnd, s.titleFont)}>24h chg%</div>
     <div className={cx(s.jsStart, s.font1)}>BTCUSD</div>
-    <div className={cx(s.jsEnd, s.font2)}>{numeral(state.data?.hyper?.price ?? 0).format('0,0.0')}</div>
+    <div className={cx(s.jsEnd, s.font2)}>{lib.formatNumber(state.data?.hyper?.price ?? 0, 1)}</div>
     <div className={cx(s.jsEnd, s.font3, css`display: flex; justify-content: center; align-items: center;`)}>
-      <div>{numeral(state.data?.hyper?.chg24Hour ?? 0).format('0.00%')}</div>
+      <div>{lib.formatPercent(state.data?.hyper?.chg24Hour ?? 0, 2)}</div>
     </div>
   </div>
 }

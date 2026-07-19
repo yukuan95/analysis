@@ -61,8 +61,8 @@ export const Table2 = () => {
         longPrice: lib.formatNumber(longPrice, 1),
         preS: lib.formatNumber(preS, 4),
         preS2: lib.formatNumber(preS2, 4),
-        longChg: longChg ? lib.formatNumber(longChg * 100, 4) + '%' : null,
-        maxMinChg: maxMinChg ? lib.formatNumber(maxMinChg * 100, 4) + '%' : null,
+        longChg: longChg ? lib.formatPercent(longChg, 4) : null,
+        maxMinChg: maxMinChg ? lib.formatPercent(maxMinChg, 4) : null,
       }
     })
   }, [state.yearMonth])
