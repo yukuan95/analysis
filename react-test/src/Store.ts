@@ -30,6 +30,12 @@ function onEffect(state: StateType, useEffect: any) {
   useEffect(() => {
     document.body.style.backgroundColor = state.isDarkMode ? '#292929FF' : '#FFFFFFFF'
   }, [state.isDarkMode])
+  useEffect(() => {
+    const price = state.data?.hyper?.price ?? 0
+    if (price > 0) {
+      document.title = lib.formatNumber(price, 1)
+    }
+  }, [state.data?.hyper?.price])
 }
 
 function onMount(state: StateType, useMount: any) {
