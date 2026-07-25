@@ -166,7 +166,7 @@ export const Candle = () => {
 
   useEffect(() => {
     if (state.data?.hyper?.candle && state.data?.hyper?.candleData?.length) {
-      const candle = state.data?.hyper?.candle
+      const candle = { ...state.data?.hyper?.candle }
       const candleData = state.data?.hyper?.candleData
       if (candle.time > (candleData.at(-1)!.time)) {
         candleData.push(candle)
