@@ -93,9 +93,9 @@ export interface Hyper {
   totalPnL: TotalPnL[]
   userFills: UserFill[]
   position?: {
-    entryPrice: string
-    positionValue: string
-    unrealizedPnl: string
+    allValue1: string
+    allValue2: string
+    rate: string
   }
   candle?: CandleItem
   candleData?: Array<CandleItem>

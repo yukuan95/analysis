@@ -40,16 +40,16 @@ function _App() {
     }
   })
   const [yearMonthRate, setYearMonthRate] = useState('')
-  const [yearMonthRate2, setYearMonthRate2] = useState('')
+  // const [yearMonthRate2, setYearMonthRate2] = useState('')
   useEffect(() => {
     const rate = state.data?.analyseData?.orderMonth?.find?.((item) => {
       return item.month === state.yearMonth
     })?.perMonthS ?? ''
-    const rate2 = state.data?.analyseData?.orderMonth?.find?.((item) => {
-      return item.month === state.yearMonth
-    })?.perMonthS2 ?? ''
+    // const rate2 = state.data?.analyseData?.orderMonth?.find?.((item) => {
+    //   return item.month === state.yearMonth
+    // })?.perMonthS2 ?? ''
     setYearMonthRate(rate ? lib.toFixedString(rate, 4) : lib.toFixedString(1, 4))
-    setYearMonthRate2(rate2 ? lib.toFixedString(rate2, 4) : lib.toFixedString(1, 4))
+    // setYearMonthRate2(rate2 ? lib.toFixedString(rate2, 4) : lib.toFixedString(1, 4))
   }, [state.yearMonth])
   return <>
     <div className={css`margin-top: 20px;`}></div>
@@ -124,18 +124,16 @@ function _App() {
       <div className={css`display: flex; gap: 20px;`}>
         <Tooltip title={<>
           <div>{lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}</div>
-          <div>{yearMonthRate2}</div>
         </>}>
           <span className={css`user-select: none;`}>{yearMonthRate}</span>
         </Tooltip>
         <Tooltip title={<>
-          <div>{state.data?.hyper?.price ? lib.formatNumber(state.data.hyper.price, 1) : ''}</div>
-          <div>{state.data?.hyper?.position?.entryPrice ?? ''}</div>
+          <div>{state.data?.hyper?.position?.rate ?? ''}</div>
         </>}>
           <span className={css`user-select: none; display: flex;`}>
-            <div>{state.data?.hyper?.position?.positionValue ?? ''}</div>
+            <div>{state.data?.hyper?.position?.allValue1 ?? ''}</div>
             <div className={css`padding-left: 5px; padding-right: 5px;`}> | </div>
-            <div>{state.data?.hyper?.position?.unrealizedPnl ?? ''}</div>
+            <div>{state.data?.hyper?.position?.allValue2 ?? ''}</div>
           </span>
         </Tooltip>
       </div>

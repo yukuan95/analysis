@@ -275,15 +275,15 @@ export function getWsData(accountAddress: string, onmessage: (data: any) => void
       const assetPositions = data.data.clearinghouseState?.assetPositions ?? []
       const item = assetPositions.find((item: any) => item.position?.coin === 'BTC')
       if (item.position) {
-        let { szi, entryPx, positionValue, unrealizedPnl } = item.position
-        if (szi.at(0) === '-') {
-          positionValue = '-' + positionValue
-        }
+        const { szi, entryPx, unrealizedPnl } = item.position
+        const allValue1 = toFixedNumber((Math.abs(Number(szi)) * Number(entryPx)) / 6, 2)
+        const allValue2 = toFixedNumber(allValue1 + Number(unrealizedPnl), 2)
+        const rate = toFixedNumber((allValue2 - allValue1) / allValue1, 4)
         onmessage({
           channel: 'clearinghouseState', position: {
-            entryPrice: formatNumber(entryPx, 1),
-            positionValue: formatNumber(toFixedNumber(positionValue, 4) / 6, 2),
-            unrealizedPnl: formatNumber(unrealizedPnl, 2),
+            allValue1: formatNumber(allValue1, 2),
+            allValue2: formatNumber(allValue2, 2),
+            rate: formatPercent(rate, 2),
           }
         })
       }
