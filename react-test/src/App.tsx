@@ -117,18 +117,24 @@ function _App() {
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
       <div className={css`display: flex; justify-content: space-between; align-items: center; min-width: 165px;`}>
-        <Tooltip title={<>
-          <div>{lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}</div>
-        </>}>
-          <span className={css`user-select: none;`}>{yearMonthRate}</span>
-        </Tooltip>
-        {state.data?.hyper?.position ? <>
+        {!!state.data?.hyper?.position ?
+          <Tooltip title={<>
+            <div>{lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}</div>
+          </>}>
+            <span className={css`user-select: none;`}>{yearMonthRate}</span>
+          </Tooltip> :
+          <span className={css`user-select: none; color: ${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>
+            {yearMonthRate}
+          </span>}
+        {!!state.data?.hyper?.position ? <>
           <Tooltip title={<>
             <div>{state.data?.hyper?.position?.rate ?? ''}</div>
           </>}>
             <span className={css`user-select: none; display: flex;`}>
               <div>{state.data?.hyper?.position?.allValue1 ?? ''}</div>
-              <div className={css`padding-left: 5px; padding-right: 5px;`}> | </div>
+              <div className={css`padding-left: 5px; padding-right: 5px;`}>
+                {state.data?.hyper?.position?.allValue1 ? '|' : ''}
+              </div>
               <div>{state.data?.hyper?.position?.allValue2 ?? ''}</div>
             </span>
           </Tooltip>
