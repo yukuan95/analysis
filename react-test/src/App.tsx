@@ -146,7 +146,10 @@ function _App() {
       </div>
       <Dropdown
         value={state.dropdownTableValue} width={'106px'} array={state.dropdownTableArray}
-        onChange={(val) => state.dropdownTableValue = val}
+        onChange={(val) => {
+          state.dropdownTableValue = val
+          localStorage.setItem('dropdownTableValue', val)
+        }}
       ></Dropdown>
     </div>
     <div className={css`margin-top: 20px;`}></div>

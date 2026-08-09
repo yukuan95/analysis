@@ -20,7 +20,7 @@ const stateInit: StateType = {
   dropdownGraphValue: 'Total Balance',
   yearMonth: lib.getNowStringTime().slice(0, 7),
   dropdownTableArray: ['Analysis', 'Hyper'],
-  dropdownTableValue: 'Analysis',
+  dropdownTableValue: localStorage.getItem('dropdownTableValue') ?? 'Analysis',
   data: undefined,
 }
 
