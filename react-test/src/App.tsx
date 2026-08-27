@@ -50,8 +50,7 @@ function _App() {
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between;`}>
       <Tooltip title={<div className={css`display: flex; align-items: center; flex-direction: column; `}>
-        <div>{startTimeReason.split(',')?.[0]}</div>
-        <div>{startTimeReason.split(',')?.[1]}</div>
+        {startTimeReason.split(',').map((item: string) => (<div>{item}</div>))}
       </div>}>
         <span className={css`user-select: none;`}>
           <div className={css`display: flex; align-items: center; gap: 5px;`}>
