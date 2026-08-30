@@ -40,11 +40,16 @@ function _App() {
     }
   })
   const [yearMonthRate, setYearMonthRate] = useState('')
+  const [yearMonthRate2, setYearMonthRate2] = useState('')
   useEffect(() => {
     const rate = state.data?.analyseData?.orderMonth?.find?.((item) => {
       return item.month === state.yearMonth
     })?.perMonthS ?? ''
     setYearMonthRate(rate ? lib.toFixedString(rate, 4) : lib.toFixedString(1, 4))
+    const rate2 = state.data?.analyseData?.orderMonth?.find?.((item) => {
+      return item.month === state.yearMonth
+    })?.perMonthS2 ?? ''
+    setYearMonthRate2(rate2 ? lib.toFixedString(rate2, 4) : lib.toFixedString(1, 4))
   }, [state.yearMonth])
   return <>
     <div className={css`margin-top: 20px;`}></div>
@@ -75,13 +80,14 @@ function _App() {
     {isShowChart ? <>
       <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
         <div>
-          {state.data?.priceLog?.accountAddress ? <Tooltip title={state.data.priceLog.accountAddress}>
-            <span className={css`user-select: none;`}>
-              <span>{state.data.priceLog.accountAddress.slice(0, 6)}</span>
-              <span>...</span>
-              <span>{state.data.priceLog.accountAddress.slice(-4)}</span>
-            </span>
-          </Tooltip> : <></>}
+          {state.data?.priceLog?.accountAddress ?
+            <Tooltip title={state.data.priceLog.accountAddress}>
+              <span className={css`user-select: none;`}>
+                <span>{state.data.priceLog.accountAddress.slice(0, 6)}</span>
+                <span>...</span>
+                <span>{state.data.priceLog.accountAddress.slice(-4)}</span>
+              </span>
+            </Tooltip> : <></>}
         </div>
         <div>
           <Dropdown
@@ -122,9 +128,11 @@ function _App() {
           </>}>
             <span className={css`user-select: none;`}>{yearMonthRate}</span>
           </Tooltip> :
-          <span className={css`user-select: none; color: ${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>
-            {yearMonthRate}
-          </span>}
+          <Tooltip title={<>
+            <span className={css`user-select: none;`}>{yearMonthRate2}</span>
+          </>}>
+            <span className={css`user-select: none;`}>{yearMonthRate}</span>
+          </Tooltip>}
         {!!state.data?.hyper?.position ? <>
           <Tooltip title={<>
             <div>{state.data?.hyper?.position?.rate ?? ''}</div>
