@@ -138,10 +138,6 @@ function _App() {
             <div>{state.data?.hyper?.position?.rate ?? ''}</div>
           </>}>
             <span className={css`user-select: none; display: flex;`}>
-              <div>{state.data?.hyper?.position?.allValue1 ?? ''}</div>
-              <div className={css`padding-left: 5px; padding-right: 5px;`}>
-                {state.data?.hyper?.position?.allValue1 ? '|' : ''}
-              </div>
               <div>{state.data?.hyper?.position?.allValue2 ?? ''}</div>
             </span>
           </Tooltip>
