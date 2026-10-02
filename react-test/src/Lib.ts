@@ -273,8 +273,8 @@ export function getWsData(accountAddress: string, onmessage: (data: any) => void
     }
     if (data.channel === 'clearinghouseState') {
       const assetPositions = data.data.clearinghouseState?.assetPositions ?? []
-      const item = assetPositions.find((item: any) => item.position?.coin === 'BTC')
-      if (item.position) {
+      const item = assetPositions.find((item: any) => item?.position?.coin === 'BTC')
+      if (item?.position) {
         const { szi, entryPx, unrealizedPnl } = item.position
         const allValue1 = toFixedNumber((Math.abs(Number(szi)) * Number(entryPx)) / 6, 2)
         const allValue2 = toFixedNumber(allValue1 + Number(unrealizedPnl), 2)
