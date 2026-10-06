@@ -24,7 +24,6 @@ function _App() {
       return true
     }
     if (state.data?.priceLog?.nowTime) {
-      console.log(state.data?.priceLog?.nowTime)
       const logNowTime = lib.stringTimeToMilliTime(state.data.priceLog.nowTime)
       const nowTime = lib.stringTimeToMilliTime(lib.getNowStringTime())
       if (nowTime - logNowTime > 15 * 60 * 1000) {
