@@ -23,6 +23,14 @@ function _App() {
     if (state.data?.errorLog) {
       return true
     }
+    if (state.data?.priceLog?.nowTime) {
+      console.log(state.data?.priceLog?.nowTime)
+      const logNowTime = lib.stringTimeToMilliTime(state.data.priceLog.nowTime)
+      const nowTime = lib.stringTimeToMilliTime(lib.getNowStringTime())
+      if (nowTime - logNowTime > 15 * 60 * 1000) {
+        return true
+      }
+    }
     if (state.data?.analyseData?.analyseTime) {
       const analyseTime = lib.stringTimeToMilliTime(state.data.analyseData.analyseTime)
       const nowTime = lib.stringTimeToMilliTime(lib.getNowStringTime())
