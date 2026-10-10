@@ -129,23 +129,18 @@ function _App() {
     <div className={css`margin-top: 20px;`}></div>
     <div className={css`display: flex; justify-content: space-between; align-items: center;`}>
       <div className={css`display: flex; justify-content: space-between; align-items: center; min-width: 165px;`}>
-        {!!state.data?.hyper?.position ?
-          <Tooltip title={<>
-            <div>{lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}</div>
-          </>}>
-            <span className={css`user-select: none;`}>{yearMonthRate}</span>
-          </Tooltip> :
-          <Tooltip title={<>
-            <span className={css`user-select: none;`}>{yearMonthRate2}</span>
-          </>}>
-            <span className={css`user-select: none;`}>{yearMonthRate}</span>
-          </Tooltip>}
+        <Tooltip title={<>
+          <span className={css`user-select: none;`}>{yearMonthRate2}</span>
+        </>}>
+          <span className={css`user-select: none;`}>{yearMonthRate}</span>
+        </Tooltip>
         {!!state.data?.hyper?.position ? <>
           <Tooltip title={<>
             <div>{state.data?.hyper?.position?.rate ?? ''}</div>
+            <div>{state.data?.hyper?.position?.allValue2 ?? ''}</div>
           </>}>
             <span className={css`user-select: none; display: flex;`}>
-              <div>{state.data?.hyper?.position?.allValue2 ?? ''}</div>
+              {lib.formatNumber((state.data?.dateValue?.at(-1)?.value ?? 0) * 100, 1)}
             </span>
           </Tooltip>
         </> : <>
