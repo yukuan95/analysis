@@ -15,6 +15,7 @@ const Tooltip = ({ placement = 'top', title, children }: { placement?: TooltipPl
       mouseEnterDelay={0}
       trigger={trigger}
       title={title}
+      styles={{ root: { maxWidth: 300 } }}
     >
       <span className={css`color: ${state.isDarkMode ? '#FFFFFF' : '#000000'};`}>{children}</span>
     </AntdTooltip>
